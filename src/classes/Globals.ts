@@ -1,5 +1,3 @@
-import Config from "./Config";
-
 // Our Globals class so that we do not have to keep calling things directly
 export default class Globals {
   // Cached API functions
@@ -10,5 +8,6 @@ export default class Globals {
   p = Isaac.GetPlayer();
   itemPool = Game().GetItemPool();
   itemConfig = Isaac.GetItemConfig();
-  config = new Config();
+  config: { [id: string]: boolean } = {};
+  items: ItemConfigItem[] = [];
 }

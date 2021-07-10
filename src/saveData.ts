@@ -1,4 +1,6 @@
 import * as json from "json";
+import g from "./globals";
+import SaveData from "./interfaces/SaveData";
 
 // make sure we have set the mod
 let mod: Mod | null = null;
@@ -20,8 +22,11 @@ export function save(): void {
   }
 
   // build what we need to save
-  const saveData = {};
-
+  const saveData: SaveData = {
+    config: g.config,
+  };
+  Isaac.DebugString("Our Save");
+  Isaac.DebugString(json.encode(saveData));
   mod.SaveData(json.encode(saveData));
 }
 
@@ -36,6 +41,7 @@ export function load(): void {
   if (!Isaac.HasModData(mod)) {
     return;
   }
-  // get the save data and decode it
-  const saveData = json.decode(Isaac.LoadModData(mod));
+  // get our save data and load the config settings
+  const saveData = json.decode(Isaac.LoadModData(mod)) as SaveData;
+  g.config = saveData.config;
 }
