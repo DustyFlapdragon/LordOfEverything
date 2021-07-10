@@ -23,10 +23,10 @@ export function save(): void {
 
   // build what we need to save
   const saveData: SaveData = {
-    config: g.config,
+    itemsConfig: g.itemsConfig,
+    trinketsConfig: g.trinketsConfig,
   };
-  Isaac.DebugString("Our Save");
-  Isaac.DebugString(json.encode(saveData));
+
   mod.SaveData(json.encode(saveData));
 }
 
@@ -43,5 +43,6 @@ export function load(): void {
   }
   // get our save data and load the config settings
   const saveData = json.decode(Isaac.LoadModData(mod)) as SaveData;
-  g.config = saveData.config;
+  g.itemsConfig = saveData.itemsConfig;
+  g.trinketsConfig = saveData.trinketsConfig;
 }

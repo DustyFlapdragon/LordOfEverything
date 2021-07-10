@@ -8,6 +8,8 @@ export default class Globals {
   p = Isaac.GetPlayer();
   itemPool = Game().GetItemPool();
   itemConfig = Isaac.GetItemConfig();
-  config: { [id: string]: boolean } = {};
+  itemsConfig: { [id: string]: boolean } = {};
+  trinketsConfig: { [id: string]: boolean } = {};
   items: ItemConfigItem[] = [];
+  trinkets: ItemConfigItem[] = [];
 }

@@ -54,10 +54,10 @@ function addSubMenuItem(type: ItemType): void {
       // add the setting the the menu and change the global config if it changes
       ModConfigMenu.AddSetting(CATEGORY_NAME, subCategory, {
         Type: ModConfigMenuOptionType.BOOLEAN,
-        CurrentSetting: () => g.config[id],
-        Display: () => `${item.Name}:${g.config[id] ? "On" : "Off"}`,
+        CurrentSetting: () => g.itemsConfig[id],
+        Display: () => `${item.Name}:${g.itemsConfig[id] ? "On" : "Off"}`,
         OnChange: (newValue: boolean | number) => {
-          g.config[id] = newValue as boolean;
+          g.itemsConfig[id] = newValue as boolean;
         },
         Info: [`Quality:${item.Quality}`, item.Description],
       });

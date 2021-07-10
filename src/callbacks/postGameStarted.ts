@@ -11,7 +11,8 @@ export function main(isContinue: boolean): void {
     // Loop through all the items in the game
     for (const [, item] of g.items.entries()) {
       // check to see if this item is enabled, if it isn't do nothing
-      if (g.config[tostring(item.ID)]) {
+
+      if (g.itemsConfig[tostring(item.ID)]) {
         // check the item type and load things accordingly
         switch (item.Type) {
           // loop through our types and load the items

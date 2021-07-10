@@ -1866,8 +1866,10 @@ ____exports.default = (function()
         self.p = Isaac.GetPlayer()
         self.itemPool = Game():GetItemPool()
         self.itemConfig = Isaac.GetItemConfig()
-        self.config = {}
+        self.itemsConfig = {}
+        self.trinketsConfig = {}
         self.items = {}
+        self.trinkets = {}
     end
     return Globals
 end)()
@@ -1912,7 +1914,7 @@ function ____exports.main(self, isContinue)
         ) do
             local item
             item = ____value[2]
-            if g.config[tostring(item.ID)] then
+            if g.itemsConfig[tostring(item.ID)] then
                 local ____switch6 = item.Type
                 if ____switch6 == ItemType.ITEM_ACTIVE then
                     goto ____switch6_case_0
@@ -1987,11 +1989,7 @@ function ____exports.save(self)
     if mod == nil then
         error("\"saveData.save()\" was called without the mod being initialized.")
     end
-    local saveData = {config = g.config}
-    Isaac.DebugString("Our Save")
-    Isaac.DebugString(
-        json.encode(saveData)
-    )
+    local saveData = {itemsConfig = g.itemsConfig, trinketsConfig = g.trinketsConfig}
     mod:SaveData(
         json.encode(saveData)
     )
@@ -2006,7 +2004,8 @@ function ____exports.load(self)
     local saveData = json.decode(
         Isaac.LoadModData(mod)
     )
-    g.config = saveData.config
+    g.itemsConfig = saveData.itemsConfig
+    g.trinketsConfig = saveData.trinketsConfig
 end
 return ____exports
  end,
@@ -2080,10 +2079,10 @@ function addSubMenuItem(self, ____type)
                 subCategory,
                 {
                     Type = 4,
-                    CurrentSetting = function() return g.config[id] end,
-                    Display = function() return (item.Name .. ":") .. ((g.config[id] and "On") or "Off") end,
+                    CurrentSetting = function() return g.itemsConfig[id] end,
+                    Display = function() return (item.Name .. ":") .. ((g.itemsConfig[id] and "On") or "Off") end,
                     OnChange = function(newValue)
-                        g.config[id] = newValue
+                        g.itemsConfig[id] = newValue
                     end,
                     Info = {
                         "Quality:" .. tostring(item.Quality),
@@ -2155,7 +2154,18 @@ do
             g.items,
             Isaac.GetItemConfig():GetCollectible(i)
         )
-        g.config[tostring(i)] = false
+        g.itemsConfig[tostring(i)] = false
+        i = i + 1
+    end
+end
+do
+    local i = 0
+    while i < Isaac.GetItemConfig():GetTrinkets().Size do
+        table.insert(
+            g.trinkets,
+            Isaac.GetItemConfig():GetTrinket(i)
+        )
+        g.trinketsConfig[tostring(i)] = false
         i = i + 1
     end
 end

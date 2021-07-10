@@ -13,7 +13,14 @@ const LordOfEverything = RegisterMod("LordOfEverything", 1);
 for (let i = 0; i < Isaac.GetItemConfig().GetCollectibles().Size; i++) {
   table.insert(g.items, Isaac.GetItemConfig().GetCollectible(i));
   // now for each item we have set the default config setting
-  g.config[tostring(i)] = false;
+  g.itemsConfig[tostring(i)] = false;
+}
+
+// lets do the same again but for trinkets
+for (let i = 0; i < Isaac.GetItemConfig().GetTrinkets().Size; i++) {
+  table.insert(g.trinkets, Isaac.GetItemConfig().GetTrinket(i));
+  // now for each item we have set the default config setting
+  g.trinketsConfig[tostring(i)] = false;
 }
 
 // set our mod and load the savedata, which will override defaults above
