@@ -1884,6 +1884,73 @@ local globals = __TS__New(Globals)
 ____exports.default = globals
 return ____exports
  end,
+["features.addItems"] = function() --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+require("lualib_bundle");
+local ____exports = {}
+local ____globals = require("globals")
+local g = ____globals.default
+function ____exports.addActiveCollectibles(self)
+    local i = 0
+    local defaultX = 80
+    local defaultY = 400
+    local pos = 0
+    for ____, ____value in __TS__Iterator(
+        __TS__ArrayEntries(g.items)
+    ) do
+        local item
+        item = ____value[2]
+        if g.itemsConfig[tostring(item.ID)] then
+            pos = i * 50
+            if i > 9 then
+                defaultX = 80
+                defaultY = 160
+                pos = ((i == 10) and 0) or (pos - 500)
+            end
+            if i == 10 then
+                pos = 0
+            end
+            if (i == 5) or (i > 14) then
+                defaultX = 105
+            end
+            if i < 20 then
+                Isaac.Spawn(
+                    EntityType.ENTITY_PICKUP,
+                    PickupVariant.PICKUP_COLLECTIBLE,
+                    item.ID,
+                    Vector(defaultX + pos, defaultY),
+                    Vector(0, 0),
+                    nil
+                )
+            end
+            i = i + 1
+        end
+    end
+end
+function ____exports.addPassiveCollectibles(self)
+    for ____, ____value in __TS__Iterator(
+        __TS__ArrayEntries(g.items)
+    ) do
+        local item
+        item = ____value[2]
+        if g.itemsConfig[tostring(item.ID)] then
+            g.p:AddCollectible(item.ID)
+        end
+    end
+end
+function ____exports.addTrinkets(self)
+    for ____, ____value in __TS__Iterator(
+        __TS__ArrayEntries(g.trinkets)
+    ) do
+        local item
+        item = ____value[2]
+        if g.trinketsConfig[tostring(item.ID)] then
+            g.p:AddTrinket(item.ID, false)
+            g.p:UseActiveItem(CollectibleType.COLLECTIBLE_SMELTER)
+        end
+    end
+end
+return ____exports
+ end,
 ["misc"] = function() --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 local ____exports = {}
 local ____globals = require("globals")
@@ -1897,73 +1964,17 @@ end
 return ____exports
  end,
 ["callbacks.postGameStarted"] = function() --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
 local ____exports = {}
-local ____globals = require("globals")
-local g = ____globals.default
+local addItems = require("features.addItems")
 local ____misc = require("misc")
 local isNewStandardGame = ____misc.isNewStandardGame
 function ____exports.main(self, isContinue)
     if isNewStandardGame(nil, isContinue) then
-        local i = 0
-        local defaultX = 80
-        local defaultY = 400
-        local pos = 0
-        for ____, ____value in __TS__Iterator(
-            __TS__ArrayEntries(g.items)
-        ) do
-            local item
-            item = ____value[2]
-            if g.itemsConfig[tostring(item.ID)] then
-                local ____switch6 = item.Type
-                if ____switch6 == ItemType.ITEM_ACTIVE then
-                    goto ____switch6_case_0
-                elseif ____switch6 == ItemType.ITEM_TRINKET then
-                    goto ____switch6_case_1
-                end
-                goto ____switch6_case_default
-                ::____switch6_case_0::
-                do
-                    pos = i * 50
-                    if i == 10 then
-                        pos = 0
-                    end
-                    if i > 9 then
-                        defaultX = 80
-                        defaultY = 160
-                        pos = ((i == 10) and 0) or (pos - 500)
-                    end
-                    if (i == 5) or (i > 14) then
-                        defaultX = 105
-                    end
-                    if i < 20 then
-                        Isaac.Spawn(
-                            EntityType.ENTITY_PICKUP,
-                            PickupVariant.PICKUP_COLLECTIBLE,
-                            item.ID,
-                            Vector(defaultX + pos, defaultY),
-                            Vector(0, 0),
-                            nil
-                        )
-                    end
-                    i = i + 1
-                    goto ____switch6_end
-                end
-                ::____switch6_case_1::
-                do
-                    g.p:AddTrinket(item.ID, false)
-                    g.p:UseActiveItem(CollectibleType.COLLECTIBLE_SMELTER)
-                    goto ____switch6_end
-                end
-                ::____switch6_case_default::
-                do
-                    g.p:AddCollectible(item.ID)
-                end
-                ::____switch6_end::
-            end
-        end
-        Isaac.DebugString("LotF: Callback triggered: MC_POST_GAME_STARTED")
+        addItems:addActiveCollectibles()
+        addItems:addPassiveCollectibles()
+        addItems:addTrinkets()
     end
+    Isaac.DebugString("LotF: Callback triggered: MC_POST_GAME_STARTED")
 end
 return ____exports
  end,
@@ -2027,6 +2038,8 @@ local g = ____globals.default
 local CATEGORY_NAME, INFO_PANEL, addSubMenuItem, addInfoMenuItem
 function addSubMenuItem(self, ____type)
     local subCategory
+    local items = g.items
+    local config = g.itemsConfig
     local ____switch5 = ____type
     if ____switch5 == ItemType.ITEM_ACTIVE then
         goto ____switch5_case_0
@@ -2055,6 +2068,8 @@ function addSubMenuItem(self, ____type)
     end
     ::____switch5_case_3::
     do
+        items = g.trinkets
+        config = g.trinketsConfig
         subCategory = "Trinkets"
         goto ____switch5_end
     end
@@ -2064,11 +2079,11 @@ function addSubMenuItem(self, ____type)
     end
     ::____switch5_end::
     __TS__ArraySort(
-        g.items,
+        items,
         function(____, a, b) return ((a.Name < b.Name) and -1) or 1 end
     )
     for ____, ____value in __TS__Iterator(
-        __TS__ArrayEntries(g.items)
+        __TS__ArrayEntries(items)
     ) do
         local item
         item = ____value[2]
@@ -2079,10 +2094,10 @@ function addSubMenuItem(self, ____type)
                 subCategory,
                 {
                     Type = 4,
-                    CurrentSetting = function() return g.itemsConfig[id] end,
-                    Display = function() return (item.Name .. ":") .. ((g.itemsConfig[id] and "On") or "Off") end,
+                    CurrentSetting = function() return config[id] end,
+                    Display = function() return (item.Name .. ":") .. ((config[id] and "On") or "Off") end,
                     OnChange = function(newValue)
-                        g.itemsConfig[id] = newValue
+                        config[id] = newValue
                     end,
                     Info = {
                         "Quality:" .. tostring(item.Quality),

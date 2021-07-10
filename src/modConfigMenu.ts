@@ -25,6 +25,8 @@ export function register(): void {
 // Create the sub-menus and add the settings
 function addSubMenuItem(type: ItemType): void {
   let subCategory: string;
+  let items = g.items;
+  let config = g.itemsConfig;
 
   // determine our item type and set the subcategory
   switch (type) {
@@ -38,26 +40,28 @@ function addSubMenuItem(type: ItemType): void {
       subCategory = "Passive";
       break;
     case ItemType.ITEM_TRINKET:
+      items = g.trinkets;
+      config = g.trinketsConfig;
       subCategory = "Trinkets";
       break;
     default:
       subCategory = "Undefined";
   }
   // sort our items by name for convenience @ todo make dynamic
-  g.items.sort((a, b) => (a.Name < b.Name ? -1 : 1));
+  items.sort((a, b) => (a.Name < b.Name ? -1 : 1));
 
   // For every item of this ItemType add the entry to the
-  for (const [, item] of g.items.entries()) {
+  for (const [, item] of items.entries()) {
     if (item.Type === type) {
       const id = tostring(item.ID);
 
       // add the setting the the menu and change the global config if it changes
       ModConfigMenu.AddSetting(CATEGORY_NAME, subCategory, {
         Type: ModConfigMenuOptionType.BOOLEAN,
-        CurrentSetting: () => g.itemsConfig[id],
-        Display: () => `${item.Name}:${g.itemsConfig[id] ? "On" : "Off"}`,
+        CurrentSetting: () => config[id],
+        Display: () => `${item.Name}:${config[id] ? "On" : "Off"}`,
         OnChange: (newValue: boolean | number) => {
-          g.itemsConfig[id] = newValue as boolean;
+          config[id] = newValue as boolean;
         },
         Info: [`Quality:${item.Quality}`, item.Description],
       });
