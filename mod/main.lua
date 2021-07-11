@@ -1899,7 +1899,7 @@ function ____exports.addActiveCollectibles(self)
     ) do
         local item
         item = ____value[2]
-        if g.itemsConfig[tostring(item.ID)] then
+        if g.itemsConfig[tostring(item.ID)] and (item.Type == ItemType.ITEM_ACTIVE) then
             pos = i * 50
             if i > 9 then
                 defaultX = 80
@@ -1932,7 +1932,7 @@ function ____exports.addPassiveCollectibles(self)
     ) do
         local item
         item = ____value[2]
-        if g.itemsConfig[tostring(item.ID)] then
+        if g.itemsConfig[tostring(item.ID)] and (item.Type == ItemType.ITEM_PASSIVE) then
             g.p:AddCollectible(item.ID)
         end
     end

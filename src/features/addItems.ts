@@ -12,8 +12,11 @@ export function addActiveCollectibles(): void {
 
   // loop through all of our items and add items
   for (const [, item] of g.items.entries()) {
-    // check if this option is enabled
-    if (g.itemsConfig[tostring(item.ID)]) {
+    // check if this option is enabled and its an active item
+    if (
+      g.itemsConfig[tostring(item.ID)] &&
+      item.Type === ItemType.ITEM_ACTIVE
+    ) {
       // for every time we add an item we need to add some space for the next pedestal
       pos = i * 50;
 
@@ -21,7 +24,7 @@ export function addActiveCollectibles(): void {
       if (i > 9) {
         defaultX = 80;
         defaultY = 160;
-        pos = i === 10 ? 0 : pos - 500; // divide our gaps by 10 or if its 10th its 0
+        pos = i === 10 ? 0 : pos - 500; // if this is the 11th item remove spacing
       }
 
       // if we are the 11th item we zero position
@@ -52,8 +55,13 @@ export function addActiveCollectibles(): void {
  * add passive items to the player
  */
 export function addPassiveCollectibles(): void {
+  // loop through all of our items
   for (const [, item] of g.items.entries()) {
-    if (g.itemsConfig[tostring(item.ID)]) {
+    // check if this option is enabled and its a passive item
+    if (
+      g.itemsConfig[tostring(item.ID)] &&
+      item.Type === ItemType.ITEM_PASSIVE
+    ) {
       // give player the passive item or familiar
       g.p.AddCollectible(item.ID);
     }
@@ -64,6 +72,7 @@ export function addPassiveCollectibles(): void {
  * add trinkets to the player
  */
 export function addTrinkets(): void {
+  // loop through all of our trinkets
   for (const [, item] of g.trinkets.entries()) {
     if (g.trinketsConfig[tostring(item.ID)]) {
       g.p.AddTrinket(item.ID, false);
