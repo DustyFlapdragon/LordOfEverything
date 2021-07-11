@@ -2,7 +2,18 @@
 <metadata>
   <name>LordOfEverything</name>
   <directory>LordOfEverything</directory>
-  <description>LordOfEverything is a currently a work in progress.</description>
+  <description>[h1][b]Lord Of Everything[/b][/h1]
+
+    [b]Features[/b]
+    - Select which Passive Items, Familiars, Active Items or Trinkets to start the game with
+    - All selected Passives and Familiars will all be added
+    - Trinkets will be added and smelted
+    - only 20 of the selected Active items will load into the starting room. This is intentional to keep the room clean.
+    - this mod only works with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2487535818]Mod Config Menu Continued[/url], it will not do anything without it.
+
+    [b]Source[/b]
+    [url=https://github.com/DustyFlapdragon/LordOfEverything]GitHub Repo[/url]
+</description>
   <version>1.0</version>
-  <visibility/>
+  <visibility></visibility>
 </metadata>
