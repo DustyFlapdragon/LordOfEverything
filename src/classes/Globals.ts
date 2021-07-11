@@ -12,4 +12,5 @@ export default class Globals {
   trinketsConfig: { [id: string]: boolean } = {};
   items: ItemConfigItem[] = [];
   trinkets: ItemConfigItem[] = [];
+  sorting = 1;
 }

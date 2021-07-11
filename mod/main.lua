@@ -1870,6 +1870,7 @@ ____exports.default = (function()
         self.trinketsConfig = {}
         self.items = {}
         self.trinkets = {}
+        self.sorting = 1
     end
     return Globals
 end)()
@@ -2000,7 +2001,7 @@ function ____exports.save(self)
     if mod == nil then
         error("\"saveData.save()\" was called without the mod being initialized.")
     end
-    local saveData = {itemsConfig = g.itemsConfig, trinketsConfig = g.trinketsConfig}
+    local saveData = {itemsConfig = g.itemsConfig, trinketsConfig = g.trinketsConfig, sorting = g.sorting}
     mod:SaveData(
         json.encode(saveData)
     )
@@ -2017,6 +2018,7 @@ function ____exports.load(self)
     )
     g.itemsConfig = saveData.itemsConfig
     g.trinketsConfig = saveData.trinketsConfig
+    g.sorting = saveData.sorting
 end
 return ____exports
  end,
@@ -2035,7 +2037,7 @@ local ____constants = require("constants")
 local VERSION = ____constants.VERSION
 local ____globals = require("globals")
 local g = ____globals.default
-local CATEGORY_NAME, INFO_PANEL, addSubMenuItem, addInfoMenuItem
+local CATEGORY_NAME, INFO_PANEL, addSubMenuItem, getSorting, addInfoMenuItem
 function addSubMenuItem(self, ____type)
     local subCategory
     local items = g.items
@@ -2078,10 +2080,27 @@ function addSubMenuItem(self, ____type)
         subCategory = "Undefined"
     end
     ::____switch5_end::
-    __TS__ArraySort(
-        items,
-        function(____, a, b) return ((a.Name < b.Name) and -1) or 1 end
-    )
+    if g.sorting == 2 then
+        __TS__ArraySort(
+            items,
+            function(____, a, b) return ((a.Name > b.Name) and -1) or 1 end
+        )
+    elseif g.sorting == 3 then
+        __TS__ArraySort(
+            items,
+            function(____, a, b) return ((a.Quality > b.Quality) and -1) or 1 end
+        )
+    elseif g.sorting == 4 then
+        __TS__ArraySort(
+            items,
+            function(____, a, b) return ((a.Quality < b.Quality) and -1) or 1 end
+        )
+    else
+        __TS__ArraySort(
+            items,
+            function(____, a, b) return ((a.Name < b.Name) and -1) or 1 end
+        )
+    end
     for ____, ____value in __TS__Iterator(
         __TS__ArrayEntries(items)
     ) do
@@ -2095,18 +2114,31 @@ function addSubMenuItem(self, ____type)
                 {
                     Type = 4,
                     CurrentSetting = function() return config[id] end,
-                    Display = function() return (item.Name .. ":") .. ((config[id] and "On") or "Off") end,
+                    Display = function() return (item.Name .. ": ") .. ((config[id] and "On") or "Off") end,
                     OnChange = function(newValue)
                         config[id] = newValue
                     end,
                     Info = {
-                        "Quality:" .. tostring(item.Quality),
+                        "Quality: " .. tostring(item.Quality),
                         item.Description
                     }
                 }
             )
         end
     end
+end
+function getSorting(self)
+    local str = "Alphabetical [A-Z]"
+    if g.sorting == 2 then
+        return "Alphabetical [Z-A]"
+    end
+    if g.sorting == 3 then
+        return "Quality [High-Low]"
+    end
+    if g.sorting == 4 then
+        return "Quality [Low-High]"
+    end
+    return str
 end
 function addInfoMenuItem(self)
     ModConfigMenu.AddText(
@@ -2135,6 +2167,22 @@ function addInfoMenuItem(self)
         CATEGORY_NAME,
         INFO_PANEL,
         function() return "https://isaacscript.github.io/" end
+    )
+    ModConfigMenu.AddSpace(CATEGORY_NAME, INFO_PANEL)
+    ModConfigMenu.AddSetting(
+        CATEGORY_NAME,
+        INFO_PANEL,
+        {
+            Type = 5,
+            Minimum = 1,
+            Maximum = 4,
+            CurrentSetting = function() return g.sorting end,
+            Display = function() return "Menu Sort Order: " .. getSorting(nil) end,
+            OnChange = function(newValue)
+                g.sorting = newValue
+            end,
+            Info = {"Menu Sort Order", "This setting takes effect when you restart the game."}
+        }
     )
 end
 CATEGORY_NAME = "Lord of Everything"

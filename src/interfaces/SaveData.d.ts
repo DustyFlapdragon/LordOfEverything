@@ -3,4 +3,5 @@
 export default interface SaveData {
   itemsConfig: { [id: string]: boolean };
   trinketsConfig: { [id: string]: boolean };
+  sorting: number;
 }

@@ -95,20 +95,17 @@ declare interface ModConfigMenuInterface {
    */
   AddNumberSetting(
     this: void,
-    settingType: ModConfigMenuOptionType,
     categoryName: string,
     subcategoryName: string,
     configTableAttribute: string,
     minValue: number,
     maxValue: number,
-    modifyBy: number,
-    defaultValue: number | boolean,
+    modifyBy: number, // mod config menu craps out with this set
+    defaultValue: number,
     displayText: string,
-    displayValueProxies: [],
-    displayDevice: boolean,
+    displayValueProxies: Record<string, string>,
     info?: string[],
     color?: string,
-    functionName?: string,
   ): void;
 
   /**
@@ -249,6 +246,8 @@ declare interface ModConfigMenuSetting {
   Info: string[];
   OnChange: (newValue: number | boolean) => void;
   Type: ModConfigMenuOptionType;
+  Minimum?: number;
+  Maximum?: number;
 }
 
 /**

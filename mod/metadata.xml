@@ -6,10 +6,12 @@
 
     [b]Features[/b]
     - Select which Passive Items, Familiars, Active Items or Trinkets to start the game with
-    - All selected Passives and Familiars will all be added
+    - All selected Passives and Familiars will all be added on a standard new game
     - Trinkets will be added and smelted
-    - only 20 of the selected Active items will load into the starting room. This is intentional to keep the room clean.
-    - this mod only works with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2487535818]Mod Config Menu Continued[/url], it will not do anything without it.
+    - 20 of the selected Active items will load into the starting room. It will not load more than 20, this is intentional to keep the room clean.
+    - Only works when turning items on with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2487535818]Mod Config Menu Continued[/url], it will not do anything without it.
+    - Sort the Mod Config Menu list by Item Name (a-z, z-a) or Item Quality (high-low, low-high)
+    - Should work with Modded Items added to the game
 
     [b]Source[/b]
     [url=https://github.com/DustyFlapdragon/LordOfEverything]GitHub Repo[/url]

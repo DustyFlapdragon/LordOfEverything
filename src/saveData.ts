@@ -25,6 +25,7 @@ export function save(): void {
   const saveData: SaveData = {
     itemsConfig: g.itemsConfig,
     trinketsConfig: g.trinketsConfig,
+    sorting: g.sorting,
   };
 
   mod.SaveData(json.encode(saveData));
@@ -45,4 +46,5 @@ export function load(): void {
   const saveData = json.decode(Isaac.LoadModData(mod)) as SaveData;
   g.itemsConfig = saveData.itemsConfig;
   g.trinketsConfig = saveData.trinketsConfig;
+  g.sorting = saveData.sorting;
 }
