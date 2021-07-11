@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <name>LordOfEverything</name>
-  <directory>LordOfEverything</directory>
-  <description>[h1][b]Lord Of Everything[/b][/h1]
+    <name>LordOfEverything</name>
+    <directory>lordofeverything</directory>
+    <id>2544508817</id>
+    <description>[h1][b]Lord Of Everything[/b][/h1]
 
     [b]Features[/b]
     - Select which Passive Items, Familiars, Active Items or Trinkets to start the game with
@@ -16,6 +17,12 @@
     [b]Source[/b]
     [url=https://github.com/DustyFlapdragon/LordOfEverything]GitHub Repo[/url]
 </description>
-  <version>1.0</version>
-  <visibility></visibility>
+    <version>1.1</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Items"/>
+    <tag id="Active Items"/>
+    <tag id="Trinkets"/>
+    <tag id="Pickups"/>
+    <tag id="Familiars"/>
 </metadata>
