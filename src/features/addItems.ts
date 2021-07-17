@@ -52,16 +52,13 @@ export function addActiveCollectibles(): void {
 }
 
 /**
- * add passive items to the player
+ * add passive/familiar items to the player
  */
-export function addPassiveCollectibles(): void {
+export function addCollectibles(type: ItemType): void {
   // loop through all of our items
   for (const [, item] of g.items.entries()) {
     // check if this option is enabled and its a passive item
-    if (
-      g.itemsConfig[tostring(item.ID)] &&
-      item.Type === ItemType.ITEM_PASSIVE
-    ) {
+    if (g.itemsConfig[tostring(item.ID)] && item.Type === type) {
       // give player the passive item or familiar
       g.p.AddCollectible(item.ID);
     }

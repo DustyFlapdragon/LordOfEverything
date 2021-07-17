@@ -1927,13 +1927,13 @@ function ____exports.addActiveCollectibles(self)
         end
     end
 end
-function ____exports.addPassiveCollectibles(self)
+function ____exports.addCollectibles(self, ____type)
     for ____, ____value in __TS__Iterator(
         __TS__ArrayEntries(g.items)
     ) do
         local item
         item = ____value[2]
-        if g.itemsConfig[tostring(item.ID)] and (item.Type == ItemType.ITEM_PASSIVE) then
+        if g.itemsConfig[tostring(item.ID)] and (item.Type == ____type) then
             g.p:AddCollectible(item.ID)
         end
     end
@@ -1972,7 +1972,8 @@ local isNewStandardGame = ____misc.isNewStandardGame
 function ____exports.main(self, isContinue)
     if isNewStandardGame(nil, isContinue) then
         addItems:addActiveCollectibles()
-        addItems:addPassiveCollectibles()
+        addItems:addCollectibles(ItemType.ITEM_PASSIVE)
+        addItems:addCollectibles(ItemType.ITEM_FAMILIAR)
         addItems:addTrinkets()
     end
     Isaac.DebugString("LotF: Callback triggered: MC_POST_GAME_STARTED")
